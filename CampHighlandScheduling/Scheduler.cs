@@ -10,14 +10,19 @@ using System.Windows.Forms;
 
 namespace CampHighlandScheduling
 {
-    public partial class ScheduleBuilder : Form
+    public partial class Scheduler : Form
     {
-        public ScheduleBuilder()
+        public Scheduler()
         {
             InitializeComponent();
         }
 
-        private void ScheduleBuilder_Load(object sender, EventArgs e)
+        private void Scheduler_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
         {
 
         }
