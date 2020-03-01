@@ -1,4 +1,4 @@
-vcFullName,vcType,bPutIn,bZip,bHarness,bSetUp,vcGender,bStore
-Drew Hughes,VOLN,1,0,1,1,MALE,0
-Colman Poje,FULL,1,1,1,1,MALE,1
-The Deb,FULL,1,1,1,1,FEMALE,1
+uID,vcFullName,vcType,bPutIn,bBelay,bZip,bHarness,bSetUp,vcGender,bStore
+1,Drew Hughes,VOLN,1,0,0,1,1,MALE,0
+2,Colman Poje,FULL,1,1,1,1,1,MALE,1
+3,The Deb,FULL,1,1,1,1,1,FEMALE,1

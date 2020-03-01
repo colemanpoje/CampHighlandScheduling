@@ -1,4 +1,15 @@
-﻿namespace CampHighlandScheduling
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.IO;
+
+namespace CampHighlandScheduling
 {
     partial class Scheduler
     {
@@ -6,6 +17,8 @@
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
+
+        public List<Person> personList = new List<Person>();
 
         /// <summary>
         /// Clean up any resources being used.
@@ -91,6 +104,12 @@
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(338, 33);
             this.comboBox1.TabIndex = 4;
+
+            comboBox1.DisplayMember = "FullName";
+            comboBox1.ValueMember = "ID";
+
+            DatabaseReader();
+
             // 
             // label3
             // 
@@ -197,11 +216,50 @@
         private System.Windows.Forms.DateTimePicker dateTimePicker2;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
+
+        public void DatabaseReader()
+        {
+            try
+            {
+                string filePath = "C:\\Users\\drewj\\Documents\\GitHub\\CampHighlandScheduling\\CampHighlandScheduling\\Database\\WorkerDB.csv";
+                DataTable dataTable = new DataTable();
+                dataTable.Columns.Add("uID");
+                dataTable.Columns.Add("vcFullName");
+                dataTable.Columns.Add("vcType");
+                dataTable.Columns.Add("bPutIn");
+                dataTable.Columns.Add("bBelay");
+                dataTable.Columns.Add("bZip");
+                dataTable.Columns.Add("bHarness");
+                dataTable.Columns.Add("bSetUp");
+                dataTable.Columns.Add("vcGender");
+                dataTable.Columns.Add("bStore");
+                StreamReader reader = new StreamReader(filePath);
+                string[] totalData = new string[File.ReadAllLines(filePath).Length];
+                totalData = reader.ReadLine().Split(',');
+                while (!reader.EndOfStream)
+                {
+                    totalData = reader.ReadLine().Split(',');
+                    dataTable.Rows.Add(totalData[0], totalData[1], totalData[2], totalData[3], totalData[4], totalData[5], totalData[6], totalData[7], totalData[8], totalData[9]);
+                }
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    if (row["vcType"].ToString() != "VOLN")
+                    {
+                        comboBox1.Items.Add(new Person(int.Parse(row["uID"].ToString()), row["vcFullName"].ToString(), row["vcType"].ToString(), Convert.ToBoolean(int.Parse(row["bPutIn"].ToString())), Convert.ToBoolean(int.Parse(row["bBelay"].ToString())), Convert.ToBoolean(int.Parse(row["bZip"].ToString())), Convert.ToBoolean(int.Parse(row["bHarness"].ToString())), Convert.ToBoolean(int.Parse(row["bSetUp"].ToString())), row["vcGender"].ToString(), Convert.ToBoolean(int.Parse(row["bStore"].ToString()))));
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
     }
 
     public class Person
     {
-        public string vcName { get; set; }
+        public int uID { get; set; }
+        public string vcFullName { get; set; }
         public string vcType { get; set; }
         public bool bPutIn { get; set; }
         public bool bBelay { get; set; }
@@ -211,9 +269,10 @@
         public string vcGender { get; set; }
         public bool bStore { get; set; }
 
-        public Person(string name, string type, bool putIn, bool belay, bool zip, bool harness, bool setup, string gender, bool store)
+        public Person(int IDIn, string name, string type, bool putIn, bool belay, bool zip, bool harness, bool setup, string gender, bool store)
         {
-            vcName = name;
+            uID = IDIn;
+            vcFullName = name;
             vcType = type;
             bPutIn = putIn;
             bBelay = belay;
@@ -222,6 +281,17 @@
             bSetUp = setup;
             vcGender = gender;
             bStore = store;
+        }
+
+        public string FullName
+        {
+            get { return vcFullName; }
+            set { vcFullName = value; }
+        }
+
+        public string ID
+        {
+            get { return uID.ToString(); }
         }
     }
 }
